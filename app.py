@@ -9,10 +9,12 @@ API_KEY = os.getenv("GROQ_API_KEY")
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 app = Flask(__name__)
-CORS(app)  # 👈 Enables CORS for all routes
+CORS(app, resources={r"/chat": {"origins": "http://127.0.0.1:5500"}})  # 👈 Enables CORS for all routes
 
 @app.route("/chat", methods=["POST"])
 def chat():
+    if request.method == "OPTIONS":
+        return '', 200  # Handle preflight check
     data = request.get_json()
     user_message = data.get("message", "")
     
