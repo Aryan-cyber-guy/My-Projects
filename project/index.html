@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Groq Chatbot</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
+    .msg { margin-bottom: 10px; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Chat with LLM (Groq)</h1>
+  <div id="chat"></div>
+  <input type="text" id="user-input" placeholder="Type a message" />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('user-input');
+      const message = input.value;
+      if (!message) return;
+
+      const chat = document.getElementById('chat');
+      chat.innerHTML += `<div class="msg user"><strong>You:</strong> ${message}</div>`;
+      input.value = "";
+
+      const res = await fetch("http://127.0.0.1:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      if (data.reply) {
+        chat.innerHTML += `<div class="msg bot"><strong>Bot:</strong> ${data.reply}</div>`;
+      } else {
+        chat.innerHTML += `<div class="msg bot"><strong>Error:</strong> Could not get response</div>`;
+      }
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
