@@ -27,7 +27,7 @@
       chat.innerHTML += `<div class="msg user"><strong>You:</strong> ${message}</div>`;
       input.value = "";
 
-      const res = await fetch("https://my-projects-x1s9.onrender.com", {
+      const res = await fetch("https://my-projects-x1s9.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message })
