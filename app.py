@@ -14,7 +14,7 @@ API_URL = "https://api.groq.com/openai/v1/chat/completions"
 app = Flask(__name__)
 
 # Enable CORS for all routes
-CORS(app, resources={r"/chat": {"origins": "http://127.0.0.1:5500"}})  
+CORS(app, origins=["https://my-projects-seven-gamma.vercel.app"]) 
 
 # Set up logging to capture detailed logs for troubleshooting
 logging.basicConfig(level=logging.INFO)
