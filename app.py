@@ -18,7 +18,7 @@ CORS(app, origins=["https://my-projects-git-main-xenos-projects-71c5e6e1.vercel.
 # Set up logging to capture detailed logs for troubleshooting
 logging.basicConfig(level=logging.INFO)
 
-@app.route("/chat", methods=["POST"])
+@app.route("/chat", methods=["POST", "OPTIONS"])
 def chat():
     if request.method == "OPTIONS":
         return '', 200  # Handle preflight check
