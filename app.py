@@ -2,11 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import requests
-from dotenv import load_dotenv
 import logging
 
 # Load environment variables
-load_dotenv()
 API_KEY = os.getenv("GROQ_API_KEY")
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
