@@ -1,21 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Groq Chatbot</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
-    .msg { margin-bottom: 10px; }
-    .user { color: blue; }
-    .bot { color: green; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: conic-gradient(from 0deg at center, #6564ED 11%, #674EF2 40%, #C761E9 65%, #4A68F5 90%, #6564ED 100%);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #chat {
+      border: 1px solid #616161;
+      margin-top: 30px;
+      height: 450px;
+      overflow-y: auto;
+      background: linear-gradient(to bottom, #cec4d0, #cfaee8);
+      border-radius: 50px;
+      padding: 40px 40px;
+      padding-bottom: 60px;
+      width: 800px;
+      max-width: 90%;
+      box-shadow: 0px 0px 15px 8px rgba(0, 0, 0, 0.2);
+      scrollbar-width: none;
+    }
+    
+
+    .msg {
+      margin-bottom: 15px;
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      clear: both;
+      font-size: 16px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      display: inline-block;
+    }
+
+
+    .user {
+      background-color: #674EF2;
+      color: white;
+      align-self: flex-start;
+      border-top-left-radius: 0;
+      float: left;
+    }
+
+    .bot {
+      background-color: #C761E9;
+      color: white;
+      align-self: flex-end;
+      border-top-right-radius: 0;
+      float: right;
+    }
+
+    h1 {
+      font-size: 50px;
+      color: #E4CFCF;
+    }
+
+    .msgbot {
+      position: relative;
+      bottom: 65px;
+      width: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #btn {
+      height: 50px;
+      background-color: rgb(242, 235, 243);
+      width: 10%;
+      border-top-right-radius: 30px;
+      border-bottom-right-radius: 30px;
+      border: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #btn:hover{
+      background-color: #E4CFCF;
+      cursor: pointer;
+    }
+
+    #user-input {
+      background-color: rgb(242, 235, 243);
+      width: 90%;
+      outline: none;
+      border: none;
+      height: 50px;
+      padding: 10px;
+      border-top-left-radius: 30px;
+      border-bottom-left-radius: 30px;
+    }
   </style>
 </head>
+
 <body>
-  <h1>Chat with LLM (Groq)</h1>
-  <div id="chat"></div>
-  <input type="text" id="user-input" placeholder="Type a message" />
-  <button onclick="sendMessage()">Send</button>
+  <div class="container">
+    <h1>Chat with LLM (Groq)</h1>
+    <div id="chat">
+    </div>
+    <div class="msgbot">
+      <input type="text" id="user-input" placeholder="Type a message" autocomplete="off" />
+      <button id="btn" onclick="sendMessage()">
+        <img src="arrow.svg" alt="arrow" height="70px" width="70px" />
+      </button>
+    </div>
+  </div>
 
   <script>
     async function sendMessage() {
@@ -24,7 +138,7 @@
       if (!message) return;
 
       const chat = document.getElementById('chat');
-      chat.innerHTML += `<div class="msg user"><strong>You:</strong> ${message}</div>`;
+      chat.innerHTML += `<div class="msg user">${message}</div>`;
       input.value = "";
 
       const res = await fetch("https://my-projects-x1s9.onrender.com/chat", {
@@ -35,13 +149,21 @@
 
       const data = await res.json();
       if (data.reply) {
-        chat.innerHTML += `<div class="msg bot"><strong>Bot:</strong> ${data.reply}</div>`;
+        chat.innerHTML += `<div class="msg bot">${data.reply}</div>`;
       } else {
         chat.innerHTML += `<div class="msg bot"><strong>Error:</strong> Could not get response</div>`;
       }
 
       chat.scrollTop = chat.scrollHeight;
     }
+
+    const inputData = document.getElementById('user-input');
+    inputData.addEventListener("keypress", (e) => {
+      if (e.key == 'Enter') {
+        sendMessage();
+      }
+    })
   </script>
 </body>
+
 </html>
